@@ -45,13 +45,14 @@ def cleanquery(order):
     return " ".join(fil).strip()
 
 # opening files
-def filesearch(filename,filepath):
+def filesearch(filename,filepath,skip=None):
     for root, dirs, files in os.walk(filepath):
+        if skip and any(root.startswith(s) for s in skip):
+            continue
         for file in files:
             if filename.lower() in file.lower():
-                return os.startfile(os.path.join(root, file))
-    else:
-        speak("file not found")
+                return os.path.join(root, file)
+    return None
 
 def order(inst):
     # youtube video controls
@@ -77,33 +78,46 @@ def order(inst):
         pyautogui.hotkey('shift','p')
 
       
-    #   Sytem apps / websites
+#   Sytem apps / websites
     elif 'start' in inst.lower() or 'open' in inst.lower():
         optn=inst.lower().split(" ")[1]
-        if optn not in sd.sys.keys():
+            # opening sytem apps
+        if optn in sd.sys.keys():
             winsound.Beep(6000, 500)  # 1kHz, 200ms
-            # opening web results
-            if optn in sd.web.keys():
-                speak(f'opening {optn}')
-                webbrowser.open(f'https://{optn}.com')
-            else:
-                speak("showing similar results")
-                optn=inst.lower()[4:]
-                webbrowser.open(f'https://www.google.com/search?q={optn}')
+            cmdprom=sd.sys[optn]
+            speak(f"opening {optn}")
+            subprocess.Popen(f"start {cmdprom}",shell=True)
+            #     subprocess.Popen(["calc"]) another way to open system apps via  cmd
+
+            # opens websites
+        elif optn in sd.web.keys():
+            winsound.Beep(6000, 500)  # 1kHz, 200ms
+            speak(f'opening {optn}')
+            webbrowser.open(f'https://{optn}.com')
+        
         else:
             if 'drive' in optn:
-                speak(f'opening drive {optn}')
-                subprocess.Popen(f"start {optn}:",shell=True)
-            elif 'downloads' in optn or 'documents' in optn:
-                speak(f'opening {optn}')
-                subprocess.Popen(f"start {sd.sys[optn]}",shell=True)
+                if len(optn)>2:
+                    speak("please specify drive")
+                else:
+                    speak(f'opening {optn} drive')
+                    subprocess.Popen(f"start {optn}:",shell=True)
             else:
-                # opening sytem apps
-                winsound.Beep(6000, 500)  # 1kHz, 200ms
-                cmdprom=sd.sys[optn]
-                speak(f"opening {optn}")
-                subprocess.Popen(f"start {cmdprom}",shell=True)
-                #     subprocess.Popen(["calc"]) another way to open system apps via  cmd
+                for p in sd.paths:
+                    fpath=filesearch(optn,p)
+                    if fpath:
+                        speak(f'opening {optn}')
+                        subprocess.Popen(f'start "" "{fpath}"',shell=True)
+                        break
+                else:
+                    fpath=filesearch(optn,r"C:\Users\Aditya",skip=sd.paths)
+                    if fpath:
+                        speak(f'opening {optn}')
+                        subprocess.Popen(f'start "" "{fpath}"',shell=True)
+                    else:
+                        speak("showing similar results")
+                        optn=inst.lower()[4:]
+                        webbrowser.open(f'https://www.google.com/search?q={optn}')
 
 
 # youtube video play

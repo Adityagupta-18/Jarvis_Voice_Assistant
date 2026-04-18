@@ -9,9 +9,12 @@ sys={
     'wi-fi':'ms-settings:network',
     'c':'C:\\',
     'd':'D:\\',
-    'donwloads':'C:\\Users\\Aditya\\Downloads',
+    'downloads':'C:\\Users\\Aditya\\Downloads',
+    'download':'C:\\Users\\Aditya\\Downloads',
     'documents':'C:\\Users\\Aditya\\Documents',
-    
+    'document':'C:\\Users\\Aditya\\Documents',
+    'desktop':'C:\\Users\\Aditya\\Desktop',
+
 }
 
 web={
@@ -25,6 +28,12 @@ web={
     'maps':'https://googlemaps.com',
     'spotify':'https://spotify.com',
 }
+
+paths = [
+    r"C:\Users\Aditya\Documents",
+    r"C:\Users\Aditya\Downloads",
+    r"C:\Users\Aditya\Desktop"
+]
 
 phrases = [
     "what is", "who is", "where is", "when is", "why is",
