@@ -70,7 +70,7 @@ def order(inst):
     #   Sytem apps / websites
     elif 'start' in inst.lower() or 'open' in inst.lower():
         optn=inst.lower().split(" ")[1]
-        if optn not in sd.apps.keys():
+        if optn not in sd.sys.keys():
             winsound.Beep(6000, 500)  # 1kHz, 200ms
             # opening web results
             if optn in sd.web.keys():
@@ -81,12 +81,16 @@ def order(inst):
                 optn=inst.lower()[4:]
                 webbrowser.open(f'https://www.google.com/search?q={optn}')
         else:
-            # opening sytem apps
-            winsound.Beep(6000, 500)  # 1kHz, 200ms
-            cmdprom=sd.apps[optn]
-            speak(f"opening {optn}")
-            subprocess.Popen(f"start {cmdprom}",shell=True)
-            #     subprocess.Popen(["calc"]) another way to open system apps via  cmd
+            if 'drive' in optn:
+                speak(f'opening drive {optn}')
+                subprocess.Popen(f"start {optn}:",shell=True)
+            else:
+                # opening sytem apps
+                winsound.Beep(6000, 500)  # 1kHz, 200ms
+                cmdprom=sd.sys[optn]
+                speak(f"opening {optn}")
+                subprocess.Popen(f"start {cmdprom}",shell=True)
+                #     subprocess.Popen(["calc"]) another way to open system apps via  cmd
 
 
 # youtube video play

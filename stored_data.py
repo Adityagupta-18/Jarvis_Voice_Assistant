@@ -1,5 +1,5 @@
 
-apps={
+sys={
     'whatsapp':'whatsapp:',
     "calculator":"calc",
     "file":"explorer",
@@ -7,6 +7,8 @@ apps={
     'settings':'ms-settings:',
     'bluetooth':'ms-settings:bluetooth',
     'wi-fi':'ms-settings:network',
+    'c':'C:\\',
+    'd':'D:\\'
 }
 
 web={
