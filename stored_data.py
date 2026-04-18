@@ -8,7 +8,10 @@ sys={
     'bluetooth':'ms-settings:bluetooth',
     'wi-fi':'ms-settings:network',
     'c':'C:\\',
-    'd':'D:\\'
+    'd':'D:\\',
+    'donwloads':'C:\\Users\\Aditya\\Downloads',
+    'documents':'C:\\Users\\Aditya\\Documents',
+    
 }
 
 web={

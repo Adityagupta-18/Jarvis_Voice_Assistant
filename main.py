@@ -84,6 +84,9 @@ def order(inst):
             if 'drive' in optn:
                 speak(f'opening drive {optn}')
                 subprocess.Popen(f"start {optn}:",shell=True)
+            elif 'downloads' in optn or 'documents' in optn:
+                speak(f'opening {optn}')
+                subprocess.Popen(f"start {sd.sys[optn]}",shell=True)
             else:
                 # opening sytem apps
                 winsound.Beep(6000, 500)  # 1kHz, 200ms
