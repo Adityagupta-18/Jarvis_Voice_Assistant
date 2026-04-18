@@ -1,4 +1,5 @@
 # c:\Users\Aditya\OneDrive\Desktop\python\Project_Jarvis\.venv\Scripts\Activate.ps1
+import os
 import speech_recognition as sr
 import pyttsx3
 import webbrowser
@@ -42,6 +43,15 @@ def cleanquery(order):
     word=order.split()
     fil=[w for w in word if w not in sd.words]
     return " ".join(fil).strip()
+
+# opening files
+def filesearch(filename,filepath):
+    for root, dirs, files in os.walk(filepath):
+        for file in files:
+            if filename.lower() in file.lower():
+                return os.startfile(os.path.join(root, file))
+    else:
+        speak("file not found")
 
 def order(inst):
     # youtube video controls
