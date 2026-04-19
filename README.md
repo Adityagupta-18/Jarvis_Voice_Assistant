@@ -37,7 +37,7 @@ It is recommended to use a virtual environment to manage dependencies and ensure
 
 # Features  
 System Control  
-Open system applications such as Calculator, File Explorer, and others 
+Open system applications such as Calculator, File Explorer, and others  
 Open websites, play, pause, controls volumes of video playing on youtube  
 Launch desktop applications using predefined paths  
 Search any system files  
