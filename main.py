@@ -53,13 +53,13 @@ def cleanquery(order):
 # Sending whatsapp mesg
 def sendmsg(name,msg):
     subprocess.Popen('start whatsapp:',shell=True)
-    time.sleep(1)
+    time.sleep(1.5)
     pyautogui.hotkey('ctrl','f')
     pyautogui.hotkey('ctrl','backspace')
     pyautogui.write(name)
-    time.sleep(1.3)
+    time.sleep(2)
     pyautogui.press('enter')
-    time.sleep(1)
+    time.sleep(1.5)
     pyautogui.write(msg)
     time.sleep(0.5)
     pyautogui.press('enter')
@@ -90,6 +90,11 @@ def order(inst):
     elif 'resume' in inst.lower():
         winsound.Beep(6000, 500)  # 1kHz, 200ms
         controls('k')
+    elif 'forward' in inst.lower():
+        controls('l')
+    elif 'backward' in inst.lower():
+        winsound.Beep(6000, 500)  # 1kHz, 200ms
+        controls('j')
     elif 'next video' in inst.lower():
         winsound.Beep(6000, 500)  # 1kHz, 200ms
         pyautogui.hotkey('shift','n')
@@ -181,12 +186,14 @@ def order(inst):
                 namecnf=voiceinput(t=3,pl=3)
                 if 'correct' in namecnf.lower():
                     speak(f"what's the message sir ?")
-                    msg=voiceinput(t=6,pl=6)
+                    print('listening for message ...')
+                    msg=voiceinput(t=10,pl=15)
                     print(msg)
                     speak(f'repeat correct if the message is {msg} ?')
                     print("Listening for message confirmation...")
                     msgcnf=voiceinput(t=3,pl=3)
                     if 'correct' in msgcnf.lower():
+                        print("sending")
                         subprocess.Popen('start whatsapp:',shell=True)
                         time.sleep(1.5)
                         sendmsg(name,msg)
@@ -252,7 +259,7 @@ if __name__=='__main__':
             if 'jarvis' in uservoice.lower():
                 speak("yes sir")
                 print("recognising task ...")
-                userorder = voiceinput(t=6,pl=6)
+                userorder = voiceinput(t=7,pl=10)
                 print(userorder)
                 order(userorder)
         except Exception as e:
