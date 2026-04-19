@@ -10,12 +10,19 @@ import datetime
 import wikipedia
 import pywhatkit
 import pyautogui
+import time
 
 def speak(Text):
     engine = pyttsx3.init()
     engine.say(Text)
     engine.runAndWait()
     engine.stop()
+
+def voiceinput(t=2,pl=2):
+    with sr.Microphone() as source:
+        # r.adjust_for_ambient_noise(source, duration=0.5)
+        audio = r.listen(source,timeout=t,phrase_time_limit=pl)
+    return r.recognize_google(audio)
 
 def timenow():
     now=datetime.datetime.now()
@@ -43,6 +50,20 @@ def cleanquery(order):
     word=order.split()
     fil=[w for w in word if w not in sd.words]
     return " ".join(fil).strip()
+
+# Sending whatsapp mesg
+def sendmsg(name,msg):
+    subprocess.Popen('start whatsapp:',shell=True)
+    time.sleep(1)
+    pyautogui.hotkey('ctrl','f')
+    pyautogui.hotkey('ctrl','backspace')
+    pyautogui.write(name)
+    time.sleep(1.3)
+    pyautogui.press('enter')
+    time.sleep(1)
+    pyautogui.write(msg)
+    time.sleep(0.5)
+    pyautogui.press('enter')
 
 # opening files
 def filesearch(filename,filepath,skip=None):
@@ -128,6 +149,58 @@ def order(inst):
         else:
             speak(f'playing {inst}')
             pywhatkit.playonyt(inst)
+
+
+    # seding whatsapp mesg
+    elif 'send'in inst.lower() or 'whatsapp' in inst.lower():
+        try:
+            if 'to' in inst.lower():
+                inst=inst.replace("send","").replace("whatsapp","").strip()
+                name=inst.split("to")[1].strip()
+                speak(f'do you want to send to {name} ?')
+                cnfname=voiceinput(t=3,pl=3)
+                if 'correct' in cnfname.lower():
+                    mesg=inst.split("to")[0].strip()
+                    speak(f'do you want to send {mesg} ?')
+                    cnfmsg=voiceinput(t=3,pl=3)
+                    if 'correct' in cnfmsg.lower():
+                        sendmsg(name,mesg)
+                    else:
+                        print("message cancelled")
+                        speak('message cancelled')
+                else:
+                    print("name not recognised")
+                    speak("sorry didn't recognised")
+
+            else:
+                speak('To whom sir ?')
+                print("Listening for name...")
+                name = voiceinput()
+                print(name)
+                speak(f'repeat correct if the name is {name} ?')
+                print("Listening for name confirmation...")
+                namecnf=voiceinput(t=3,pl=3)
+                if 'correct' in namecnf.lower():
+                    speak(f"what's the message sir ?")
+                    msg=voiceinput(t=6,pl=6)
+                    print(msg)
+                    speak(f'repeat correct if the message is {msg} ?')
+                    print("Listening for message confirmation...")
+                    msgcnf=voiceinput(t=3,pl=3)
+                    if 'correct' in msgcnf.lower():
+                        subprocess.Popen('start whatsapp:',shell=True)
+                        time.sleep(1.5)
+                        sendmsg(name,msg)
+                    else:
+                        print("message cancelled")
+                        speak('message cancelled')
+                else:
+                    print("name not recognised")
+                    speak("sorry didn't recognised")
+        except Exception as e:
+            print(format(e))
+            speak("didn't recognised")
+
     
     #   Date and time
     elif 'time' in inst.lower():
@@ -174,18 +247,13 @@ if __name__=='__main__':
     r=sr.Recognizer()
     while True:
         try:
-            with sr.Microphone() as source:
-                print("speak now...")
-                # r.adjust_for_ambient_noise(source, duration=1.2)
-                audio = r.listen(source,timeout=2,phrase_time_limit=2)
-            uservoice = r.recognize_google(audio)
+            print("speak now...")
+            uservoice = voiceinput()
             print(uservoice)
             if 'jarvis' in uservoice.lower():
                 speak("yes sir")
                 print("recognising task ...")
-                with sr.Microphone() as source:
-                    audio = r.listen(source,timeout=6,phrase_time_limit=6)
-                userorder = r.recognize_google(audio)
+                userorder = voiceinput(t=6,pl=6)
                 print(userorder)
                 order(userorder)
         except Exception as e:
