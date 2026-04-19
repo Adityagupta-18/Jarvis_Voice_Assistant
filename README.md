@@ -3,6 +3,27 @@ Jarvis - Python Voice Assistant
 
 Jarvis is a Python-based voice assistant capable of performing system operations, web automation, media playback, and answering user queries through voice commands.  
 
+# Working Principle
+Jarvis continuously listens for the wake word `Jarvis`.  
+Once detected, it temporarily activates and listens for a command.  
+The spoken input is converted into text using speech recognition.  
+The system then analyzes the command and routes it to the appropriate module, such as:
+
+- System control  
+- Web automation  
+- Media handling  
+- Information retrieval  
+After executing the task, Jarvis returns to standby mode, waiting for the next wake word.
+
+# How to Use
+Jarvis operates using a wake-word mechanism.
+
+1. Start the application.
+2. Say the wake word: `Jarvis`
+3. Jarvis will respond with an acknowledgement tone or message.
+4. After the response, speak your command clearly.
+Jarvis will then process the command and perform the requested action.
+
 # Features  
 System Control  
 Open system applications such as Calculator, File Explorer, and others  
