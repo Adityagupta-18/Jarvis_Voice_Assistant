@@ -24,6 +24,15 @@ Jarvis operates using a wake-word mechanism.
 4. After the response, speak your command clearly.
 Jarvis will then process the command and perform the requested action.
 
+# Requirements
+Jarvis requires Python 3.8 to 3.11 and is designed to run on Windows 10 or Windows 11. A working microphone and an active internet connection are necessary for voice recognition and web-based features.
+
+The project depends on common Python libraries such as SpeechRecognition, pyttsx3, pywhatkit, pyautogui, wikipedia, and pyaudio. These can be installed using the provided requirements file.
+
+For the WhatsApp messaging feature, WhatsApp Desktop must be installed and logged in on the system.
+
+It is recommended to use a virtual environment to manage dependencies and ensure smooth execution.
+
 # Features  
 System Control  
 Open system applications such as Calculator, File Explorer, and others  

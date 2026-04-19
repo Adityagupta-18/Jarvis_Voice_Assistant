@@ -158,7 +158,7 @@ def order(inst):
     # seding whatsapp mesg
     elif 'send'in inst.lower() or 'whatsapp' in inst.lower():
         try:
-            if 'to' in inst.lower():
+            if 'to' in inst.lower() or 'tu' in inst.lower():
                 inst=inst.replace("send","").replace("whatsapp","").strip()
                 name=inst.split("to")[1].strip()
                 speak(f'do you want to send to {name} ?')
