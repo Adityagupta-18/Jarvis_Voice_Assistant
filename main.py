@@ -1,4 +1,3 @@
-# c:\Users\Aditya\OneDrive\Desktop\python\Project_Jarvis\.venv\Scripts\Activate.ps1
 import os
 import speech_recognition as sr
 import pyttsx3
