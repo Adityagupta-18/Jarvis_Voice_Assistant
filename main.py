@@ -106,13 +106,14 @@ def order(inst):
 #   Sytem apps / websites
     elif 'start' in inst.lower() or 'open' in inst.lower():
         optn=inst.lower().split(" ")[1]
+        optn2=inst.lower().split(" ")[1:]
+        optn2=" ".join(optn2)
             # opening sytem apps
         if optn in sd.sys.keys():
             winsound.Beep(6000, 500)  # 1kHz, 200ms
             cmdprom=sd.sys[optn]
             speak(f"opening {optn}")
             subprocess.Popen(f"start {cmdprom}",shell=True)
-            #     subprocess.Popen(["calc"]) another way to open system apps via  cmd
 
             # opens websites
         elif optn in sd.web.keys():
@@ -120,6 +121,7 @@ def order(inst):
             speak(f'opening {optn}')
             webbrowser.open(f'https://{optn}.com')
         
+        # system search
         else:
             if 'drive' in optn:
                 if len(optn)>2:
@@ -128,16 +130,20 @@ def order(inst):
                     speak(f'opening {optn} drive')
                     subprocess.Popen(f"start {optn}:",shell=True)
             else:
+                # system file search
                 for p in sd.paths:
                     fpath=filesearch(optn,p)
                     if fpath:
-                        speak(f'opening {optn}')
+                        speak(f'opening {optn2}')
+                        subprocess.Popen(f'explorer /select,"{fpath}"', shell=True)
+                        time.sleep(2)
                         subprocess.Popen(f'start "" "{fpath}"',shell=True)
                         break
                 else:
                     fpath=filesearch(optn,r"C:\Users\Aditya",skip=sd.paths)
                     if fpath:
-                        speak(f'opening {optn}')
+                        speak(f'opening {optn2}')
+                        subprocess.Popen(f'explorer /select,"{fpath}"', shell=True)
                         subprocess.Popen(f'start "" "{fpath}"',shell=True)
                     else:
                         speak("showing similar results")
