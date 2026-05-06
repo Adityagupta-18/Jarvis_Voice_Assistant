@@ -10,6 +10,7 @@ import wikipedia
 import pywhatkit
 import pyautogui
 import time
+import pyperclip
 
 def speak(Text):
     engine = pyttsx3.init()
@@ -53,16 +54,39 @@ def cleanquery(order):
 # Sending whatsapp mesg
 def sendmsg(name,msg):
     subprocess.Popen('start whatsapp:',shell=True)
-    time.sleep(1.5)
+    time.sleep(2)
     pyautogui.hotkey('ctrl','f')
-    pyautogui.hotkey('ctrl','backspace')
+    pyautogui.hotkey('ctrl','a')
+    pyautogui.press('backspace')
     pyautogui.write(name)
     time.sleep(2)
     pyautogui.press('enter')
     time.sleep(1.5)
     pyautogui.write(msg)
     time.sleep(0.5)
+
+def sendfile(name,loc):
+    subprocess.Popen('start whatsapp:',shell=True)
+    time.sleep(2)
+    pyautogui.hotkey('ctrl','f')
+    pyautogui.hotkey('ctrl','a')
+    pyautogui.press('backspace')
+    pyautogui.write(name)
+    time.sleep(2)
     pyautogui.press('enter')
+    time.sleep(2)
+    pyautogui.hotkey('shift','tab')
+    pyautogui.hotkey('shift','tab')
+    time.sleep(1)
+    pyperclip.copy(loc)
+    pyautogui.press('enter')
+    time.sleep(1.5)
+    pyautogui.press('enter')
+    time.sleep(1.5)
+    pyautogui.hotkey('ctrl','v')
+    time.sleep(1.5)
+    pyautogui.press('enter')
+    time.sleep(2)
 
 # opening files
 def filesearch(filename,filepath,skip=None):
@@ -131,12 +155,13 @@ def order(inst):
                     subprocess.Popen(f"start {optn}:",shell=True)
             else:
                 # system file search
+                speak('searching file')
                 for p in sd.paths:
                     fpath=filesearch(optn,p)
                     if fpath:
                         speak(f'opening {optn2}')
                         subprocess.Popen(f'explorer /select,"{fpath}"', shell=True)
-                        time.sleep(2)
+                        time.sleep(1.5)
                         subprocess.Popen(f'start "" "{fpath}"',shell=True)
                         break
                 else:
@@ -164,28 +189,8 @@ def order(inst):
     # seding whatsapp mesg
     elif 'send'in inst.lower() or 'whatsapp' in inst.lower():
         try:
-            if 'to' in inst.lower():
-                inst=inst.replace("send","").replace("whatsapp","").strip()
-                name=inst.split("to")[1].strip()
-                speak(f'do you want to send to {name} ?')
-                print('please confirm by saying correct...')
-                cnfname=voiceinput(t=3,pl=3)
-                if 'correct' in cnfname.lower():
-                    mesg=inst.split("to")[0].strip()
-                    speak(f'do you want to send {mesg} ?')
-                    print('please confirm by saying correct...')
-                    cnfmsg=voiceinput(t=3,pl=3)
-                    if 'correct' in cnfmsg.lower():
-                        sendmsg(name,mesg)
-                    else:
-                        print("message cancelled")
-                        speak('message cancelled')
-                else:
-                    print("name not recognised")
-                    speak("sorry didn't recognised")
-
-            else:
-                speak('To whom sir ?')
+            if 'message' in inst.lower():
+                speak('To whom sir ... name ?')
                 print("Listening for name...")
                 name = voiceinput()
                 print(name)
@@ -200,12 +205,71 @@ def order(inst):
                 if 'correct' in msgcnf.lower():
                     print("sending")
                     speak('sending')
-                    subprocess.Popen('start whatsapp:',shell=True)
-                    time.sleep(1.5)
                     sendmsg(name,msg)
+                    speak('should i send please confirm ?')
+                    lastcnf=voiceinput()
+                    if 'correct' in lastcnf.lower():
+                        pyautogui.press('enter')
+                        speak('message sent')
+                    else:
+                        pyautogui.hotkey('ctrl','a')
+                        pyautogui.press('backspace')
                 else:
                     print("message cancelled")
                     speak('message cancelled')
+            
+            # sending document
+            elif 'file' in inst.lower() or 'document' in inst.lower():
+                speak('whats the file name')
+                print('whats the file name')
+                fname=voiceinput(3,3)
+                fname=fname.split(" ")[0]
+                print(fname)
+                speak('searching file')
+                for p in sd.paths:
+                    fpath=filesearch(fname,p)
+                    if fpath:
+                        subprocess.Popen(f'explorer /select,"{fpath}"', shell=True)
+                        time.sleep(1.5)
+                        speak('do you want me to send this file')
+                        break
+                else:
+                    fpath=filesearch(fname,r"C:\Users\Aditya",skip=sd.paths)
+                    if fpath:
+                        subprocess.Popen(f'explorer /select,"{fpath}"', shell=True)
+                        time.sleep(1.5)
+                        speak('do you want me to send this file')
+                        subprocess.Popen(f'start "" "{fpath}"',shell=True)
+                    else:
+                        speak('file not found')
+                        print('file not found')
+                if fpath:
+                    speak('speak correct if yes ')
+                    print('speak correct if yes ')
+                    fcnf=voiceinput()
+                    if 'correct' in fcnf.lower():
+                        print('to whom sir ?')
+                        speak('to whom sir ?')
+                        name=voiceinput()
+                        print(name)
+                        speak(f'do you want to send this to {name}')
+                        speak('please confirm')
+                        print('please confirm by saying correct')
+                        ncnf=voiceinput()
+                        if 'correct' in ncnf.lower():
+                            sendfile(name,fpath)
+                            speak('should i send please confirm ?')
+                            lastcnf=voiceinput()
+                            if 'correct' in lastcnf.lower():
+                                pyautogui.press('enter')
+                                speak('file sent')
+                    else:
+                        print('sending cancelled')
+                        speak('sending cancelled')
+            else:
+                print("didn't recognised")
+                speak("didn't recognised")
+
         except Exception as e:
             print(format(e))
             speak("didn't recognised")
