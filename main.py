@@ -134,15 +134,15 @@ def order(inst):
         optn2=" ".join(optn2)
             # opening sytem apps
         if optn in sd.sys.keys():
-            winsound.Beep(6000, 500)  # 1kHz, 200ms
             cmdprom=sd.sys[optn]
             speak(f"opening {optn}")
+            winsound.Beep(6000, 500)  # 1kHz, 200ms
             subprocess.Popen(f"start {cmdprom}",shell=True)
 
             # opens websites
         elif optn in sd.web.keys():
-            winsound.Beep(6000, 500)  # 1kHz, 200ms
             speak(f'opening {optn}')
+            winsound.Beep(6000, 500)  # 1kHz, 200ms
             webbrowser.open(f'https://{optn}.com')
         
         # system search
@@ -152,6 +152,7 @@ def order(inst):
                     speak("please specify drive")
                 else:
                     speak(f'opening {optn} drive')
+                    winsound.Beep(6000, 500)
                     subprocess.Popen(f"start {optn}:",shell=True)
             else:
                 # system file search
@@ -160,6 +161,7 @@ def order(inst):
                     fpath=filesearch(optn,p)
                     if fpath:
                         speak(f'opening {optn2}')
+                        winsound.Beep(6000, 500)
                         subprocess.Popen(f'explorer /select,"{fpath}"', shell=True)
                         time.sleep(1.5)
                         subprocess.Popen(f'start "" "{fpath}"',shell=True)
@@ -168,6 +170,7 @@ def order(inst):
                     fpath=filesearch(optn,r"C:\Users\Aditya",skip=sd.paths)
                     if fpath:
                         speak(f'opening {optn2}')
+                        winsound.Beep(6000, 500)
                         subprocess.Popen(f'explorer /select,"{fpath}"', shell=True)
                         subprocess.Popen(f'start "" "{fpath}"',shell=True)
                     else:
@@ -210,6 +213,7 @@ def order(inst):
                     lastcnf=voiceinput()
                     if 'correct' in lastcnf.lower():
                         pyautogui.press('enter')
+                        winsound.Beep(6000, 500)
                         speak('message sent')
                     else:
                         pyautogui.hotkey('ctrl','a')
@@ -262,6 +266,7 @@ def order(inst):
                             lastcnf=voiceinput()
                             if 'correct' in lastcnf.lower():
                                 pyautogui.press('enter')
+                                winsound.Beep(6000, 500)
                                 speak('file sent')
                     else:
                         print('sending cancelled')
@@ -274,7 +279,26 @@ def order(inst):
             print(format(e))
             speak("didn't recognised")
 
+    # minimize all
+    elif 'minimise' in inst.lower():    #its not reacognising minimize so changes it as minimise
+        if 'all' in inst.lower() or 'everything' in inst.lower():
+            winsound.Beep(6000, 500)
+            pyautogui.hotkey('win','d')
+        else:
+            speak("didn't recognised")
     
+    # restore or switch tab
+    elif 'tab' in inst.lower():
+        if 'restore' in inst.lower() or 'switch' in inst.lower():
+            winsound.Beep(6000, 500)
+            pyautogui.hotkey('alt','tab')
+        elif 'close' in inst.lower():
+            winsound.Beep(6000, 500)
+            pyautogui.hotkey('ctrl','w')
+        else:
+            speak("didn't recognised")
+
+        
     #   Date and time
     elif 'time' in inst.lower():
         speak(timenow())
