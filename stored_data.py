@@ -1,6 +1,7 @@
 
 sys={
     'whatsapp':'whatsapp:',
+    'linkedin':'linkedin:',
     "calculator":"calc",
     "file":"explorer",
     "browser":'msedge',
