@@ -11,6 +11,11 @@ import pywhatkit
 import pyautogui
 import time
 import pyperclip
+from dotenv import load_dotenv
+
+load_dotenv()
+news_api=os.getenv("News_api")
+weather_api=os.getenv("Weather_api")
 
 def speak(Text):
     engine = pyttsx3.init()
