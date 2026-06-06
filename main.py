@@ -12,9 +12,12 @@ import pyautogui
 import time
 import pyperclip
 from dotenv import load_dotenv
+import requests
 
 load_dotenv()
+# https://newsapi.org/  - NEWS API
 news_api=os.getenv("News_api")
+# https://openweathermap.org/api    - WEATHER API
 weather_api=os.getenv("Weather_api")
 
 def speak(Text):
@@ -92,6 +95,31 @@ def sendfile(name,loc):
     time.sleep(1.5)
     pyautogui.press('enter')
     time.sleep(2)
+
+def weather():
+    try:
+        url = f"https://api.openweathermap.org/data/2.5/weather?q=Delhi&appid={weather_api}&units=metric"
+        response = requests.get(url)
+        data = response.json()
+        temp = data["main"]["temp"]
+        feels = data["main"]["feels_like"]
+        description = data["weather"][0]["description"]
+        date=str(datetime.date.today())
+        print(f"the temperatue is {temp}°C feel like {feels}°C with {description}")
+        speak(f"on {date} at {timenow()} the current temperature is {temp}°Celsius , feels like {feels}°Celsius with {description}")
+    except Exception as e:
+        speak("Unable to fetch ")
+
+def news():
+    url=f'https://gnews.io/api/v4/top-headlines?country=in&lang=en&apikey={news_api}'
+    response=requests.get(url)
+    data=response.json()
+    positions = ["First", "Second", "Third","fourth","Fifth"]  
+    print("Latest Indian headlines are ")
+    speak("Latest Indian headlines are ")
+    for i, article in enumerate(data["articles"][:5]):
+        print(f'{i+1}. {article["title"]}')
+        speak(f'{positions[i]}. {article["title"]}')
 
 # opening files
 def filesearch(filename,filepath,skip=None):
@@ -183,6 +211,13 @@ def order(inst):
                         optn=inst.lower()[4:]
                         webbrowser.open(f'https://www.google.com/search?q={optn}')
 
+    # Weather API
+    elif "weather" in inst.lower():
+        weather()
+
+    # News API
+    elif "news" in inst.lower():
+        news()
 
 # youtube video play
     elif 'play' in inst.lower() or "youtube" in inst.lower():
@@ -308,7 +343,7 @@ def order(inst):
     elif 'time' in inst.lower():
         speak(timenow())
     elif 'date' in inst.lower():
-        date=datetime.date.today()
+        date=str(datetime.date.today())
         speak(date)
     elif ((("what" in inst.lower()) or
            ("what's" in inst.lower()) or 

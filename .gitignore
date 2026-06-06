@@ -1,2 +1,5 @@
-# api tokens in .env file :
+# API tokens in .env file :
 .env
+
+# Cache file :
+__pycache__
