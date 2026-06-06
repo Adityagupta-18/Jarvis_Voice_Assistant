@@ -35,14 +35,25 @@ For the WhatsApp messaging feature, WhatsApp Desktop must be installed and logge
 
 It is recommended to use a virtual environment to manage dependencies and ensure smooth execution.
 
-# Features  
+# Key Features  
 System Control  
 Open system applications such as Calculator, File Explorer, and others  
 Open websites, play, pause, controls volumes of video playing on youtube  
 Launch desktop applications using predefined paths  
 Search any system files  
 Send messages via whatsapp  
- 
+Weather Updates  
+Latest News Headlines  
+
+# Weather Updates
+Jarvis can fetch and speak the current weather details for any city using a Weather API integration. The assistant provides information such as temperature, weather conditions, humidity, and other real-time updates through voice commands.
+
+# Latest News Headlines
+Integrated News API support to allow Jarvis to retrieve and read the latest news headlines across multiple categories such as technology, sports, business, and general news. The assistant fetches real-time news data and presents concise spoken updates to the user.
+
+# API Integration
+The project uses REST APIs for real-time data retrieval and processes JSON responses dynamically using Python. Secure API key handling is implemented using environment variables and .env configuration files.
+
 # Web Automation  
 Open frequently used websites like YouTube, Google, and ChatGPT  
 Automatically perform a Google search if the requested website is not recognized  

@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 import requests
 
 load_dotenv()
-# https://newsapi.org/  - NEWS API
+# https://gnews.io/  - NEWS API
 news_api=os.getenv("News_api")
 # https://openweathermap.org/api    - WEATHER API
 weather_api=os.getenv("Weather_api")
