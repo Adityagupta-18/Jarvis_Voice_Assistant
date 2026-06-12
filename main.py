@@ -28,7 +28,7 @@ def speak(Text):
 
 def voiceinput(t=2,pl=2):
     with sr.Microphone() as source:
-        # r.adjust_for_ambient_noise(source, duration=0.5)
+        # r.adjust_for_ambient_noise(source, duration=1)
         audio = r.listen(source,timeout=t,phrase_time_limit=pl)
     return r.recognize_google(audio)
 
@@ -216,7 +216,7 @@ def order(inst):
         weather()
 
     # News API
-    elif "news" in inst.lower():
+    elif "news" in inst.lower() or 'headline' in inst.lower():
         news()
 
 # youtube video play
@@ -387,7 +387,7 @@ if __name__=='__main__':
             print("speak now...")
             uservoice = voiceinput()
             print(uservoice)
-            if 'jarvis' in uservoice.lower():
+            if uservoice and 'jarvis' in uservoice.lower():
                 speak("yes sir")
                 print("recognising task ...")
                 userorder = voiceinput(t=7,pl=10)
