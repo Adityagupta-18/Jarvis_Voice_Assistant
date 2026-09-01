@@ -357,6 +357,11 @@ def order(inst):
         speak('showing google result')
         webbrowser.open(f'https://www.google.com/search?q={inst}')
 
+    # Stop jarvis
+    elif 'exit' in inst.lower() or 'quit' in inst.lower():
+        speak("Goodbye sir ... have a nice day")
+        return False
+
     else:
         try:
             winsound.Beep(6000, 500)  # 1kHz, 200ms
@@ -376,6 +381,7 @@ def order(inst):
             speak("showing google search results")
             webbrowser.open(f'https://www.google.com/search?q={inst}')
 
+    return True
 
 if __name__=='__main__':
     print("Activating...")
@@ -392,6 +398,7 @@ if __name__=='__main__':
                 print("recognising task ...")
                 userorder = voiceinput(t=7,pl=10)
                 print(userorder)
-                order(userorder)
+                if not order(userorder):
+                    break
         except Exception as e:
             print(format(e))
